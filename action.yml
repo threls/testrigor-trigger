@@ -1,0 +1,30 @@
+name: 'TestRigor Trigger'
+description: 'A composite action to run testrigor bash scripts with configurable parameters'
+
+inputs:
+  testrigor-token:
+    description: 'TestRigor authentication token'
+    required: true
+    sensitive: true
+  test-suite-key:
+    description: 'TestRigor test suite key'
+    required: true
+    sensitive: true
+  json-data:
+    description: 'JSON data to be passed to the script'
+    required: true
+    default: '{}'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run TestRigor Tests
+      shell: bash
+      env:
+        TESTRIGOR_TOKEN: ${{ inputs.testrigor-token }}
+        TEST_SUITE_KEY: ${{ inputs.test-suite-key }}
+        JSON_DATA: ${{ inputs.json-data }}
+      run: |
+        echo "$JSON_DATA" > /tmp/input.json
+        chmod +x .github/actions/run-bash/run-tests.sh
+        .github/actions/run-bash/run-tests.sh 
