@@ -10,10 +10,6 @@ inputs:
     description: 'TestRigor test suite key'
     required: true
     sensitive: true
-  json-data:
-    description: 'JSON data to be passed to the script'
-    required: true
-    default: '{}'
 
 runs:
   using: "composite"
@@ -23,7 +19,5 @@ runs:
       env:
         TESTRIGOR_TOKEN: ${{ inputs.testrigor-token }}
         TEST_SUITE_KEY: ${{ inputs.test-suite-key }}
-        JSON_DATA: ${{ inputs.json-data }}
       run: |
-        echo "$JSON_DATA" > /tmp/input.json
         bash ${{ github.action_path }}/run-tests.sh 

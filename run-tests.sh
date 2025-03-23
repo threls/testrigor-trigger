@@ -14,12 +14,6 @@ if [ -z "$TEST_SUITE_KEY" ]; then
     exit 1
 fi
 
-# Read and validate JSON data
-if [ ! -f "/tmp/input.json" ]; then
-    echo "Error: JSON data file not found"
-    exit 1
-fi
-
 # Construct the TestRigor API URL
 API_URL="https://api.testrigor.com/api/v1/test-suites/$TEST_SUITE_KEY/retest"
 
@@ -28,7 +22,6 @@ echo "Triggering TestRigor test suite execution..."
 RESPONSE=$(curl -s -X POST \
     -H "auth-token: $TESTRIGOR_TOKEN" \
     -H "Content-Type: application/json" \
-    -d @/tmp/input.json \
     "$API_URL")
 
 # Check if the request was successful
@@ -47,4 +40,5 @@ fi
 
 echo "Test suite execution triggered successfully!"
 echo "Execution ID: $EXECUTION_ID"
-echo "You can monitor the execution at: https://app.testrigor.com/executions/$EXECUTION_ID" 
+echo "You can monitor the execution at: https://app.testrigor.com/test-suites/$TEST_SUITE_KEY/runs/$EXECUTION_ID" 
+ 
