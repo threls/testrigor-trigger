@@ -30,16 +30,27 @@ if ! command -v jq &> /dev/null; then
 fi
 
 # Execute curl with verbose output to stderr
+echo "Making API request to: $API_URL"
 RESPONSE=$(curl -v -s -X POST \
     -H "auth-token: $TESTRIGOR_TOKEN" \
-    -H "Content-Type: application/json" \
-    "$API_URL" 2>&1)
+    -H "Content-type: application/json" \
+    "$API_URL" 2>/tmp/curl_verbose.log)
+
+# If the response is empty, check the verbose log
+if [ -z "$RESPONSE" ]; then
+    echo "Error: Empty response received"
+    echo "Curl verbose output:"
+    cat /tmp/curl_verbose.log
+    exit 1
+fi
 
 # Check curl exit status
 CURL_EXIT_CODE=$?
 if [ $CURL_EXIT_CODE -ne 0 ]; then
     echo "Error: curl command failed with exit code $CURL_EXIT_CODE"
-    echo "Response/Error: $RESPONSE"
+    echo "Response: $RESPONSE"
+    echo "Curl verbose output:"
+    cat /tmp/curl_verbose.log
     exit 1
 fi
 
