@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Extract and display the execution ID
-EXECUTION_ID=$(echo "$RESPONSE" | jq -r '.executionId')
+EXECUTION_ID=$(echo "$RESPONSE" | jq -r '.taskId')
 if [ "$EXECUTION_ID" = "null" ]; then
     echo "Error: Failed to get execution ID from response"
     echo "Response: $RESPONSE"
