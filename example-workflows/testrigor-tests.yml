@@ -1,0 +1,18 @@
+name: TestRigor Test Suite
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run TestRigor Tests
+        uses: ./.github/actions/run-bash
+        with:
+          testrigor-token: ${{ secrets.TESTRIGOR_TOKEN }}
+          test-suite-key: ${{ secrets.TEST_SUITE_KEY }}
