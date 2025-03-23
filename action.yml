@@ -26,5 +26,5 @@ runs:
         JSON_DATA: ${{ inputs.json-data }}
       run: |
         echo "$JSON_DATA" > /tmp/input.json
-        chmod +x ./run-tests.sh
-        ./run-tests.sh 
+        chmod +x run-tests.sh
+        run-tests.sh 
