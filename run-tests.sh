@@ -15,8 +15,7 @@ if [ -z "$TEST_SUITE_KEY" ]; then
 fi
 
 # Construct the TestRigor API URL
-API_URL="https://api.testrigor.com/api/v1/test-suites/$TEST_SUITE_KEY/retest"
-
+API_URL="https://api.testrigor.com/api/v1/apps/$TEST_SUITE_KEY/retest"
 # Make the API request
 echo "Triggering TestRigor test suite execution..."
 if ! command -v curl &> /dev/null; then
