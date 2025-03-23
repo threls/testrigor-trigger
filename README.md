@@ -70,7 +70,9 @@ The action will fail if:
 
 ## Security
 
-Store your TestRigor token and suite key as GitHub repository secrets. Never commit these values directly in your workflow files.
+Store your TestRigor token as a GitHub repository secret. Never commit these values directly in your workflow files.
+
+The test suite key can be stored as a variable, otherwise the execution urls will not work as they will be hidden from the output.
 
 ## Contributing
 
