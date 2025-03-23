@@ -19,20 +19,40 @@ API_URL="https://api.testrigor.com/api/v1/test-suites/$TEST_SUITE_KEY/retest"
 
 # Make the API request
 echo "Triggering TestRigor test suite execution..."
-RESPONSE=$(curl -s -X POST \
+if ! command -v curl &> /dev/null; then
+    echo "Error: curl is not installed"
+    exit 1
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is not installed"
+    exit 1
+fi
+
+# Execute curl with verbose output to stderr
+RESPONSE=$(curl -v -s -X POST \
     -H "auth-token: $TESTRIGOR_TOKEN" \
     -H "Content-Type: application/json" \
-    "$API_URL")
+    "$API_URL" 2>&1)
 
-# Check if the request was successful
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to trigger test suite execution"
+# Check curl exit status
+CURL_EXIT_CODE=$?
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+    echo "Error: curl command failed with exit code $CURL_EXIT_CODE"
+    echo "Response/Error: $RESPONSE"
+    exit 1
+fi
+
+# Verify we got a valid JSON response
+if ! echo "$RESPONSE" | jq . >/dev/null 2>&1; then
+    echo "Error: Invalid JSON response received"
+    echo "Raw response: $RESPONSE"
     exit 1
 fi
 
 # Extract and display the execution ID
 EXECUTION_ID=$(echo "$RESPONSE" | jq -r '.taskId')
-if [ "$EXECUTION_ID" = "null" ]; then
+if [ -z "$EXECUTION_ID" ] || [ "$EXECUTION_ID" = "null" ]; then
     echo "Error: Failed to get execution ID from response"
     echo "Response: $RESPONSE"
     exit 1

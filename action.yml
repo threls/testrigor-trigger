@@ -9,7 +9,7 @@ inputs:
   test-suite-key:
     description: 'TestRigor test suite key'
     required: true
-    sensitive: true
+    sensitive: false
 
 runs:
   using: "composite"
