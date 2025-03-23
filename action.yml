@@ -26,4 +26,4 @@ runs:
         JSON_DATA: ${{ inputs.json-data }}
       run: |
         echo "$JSON_DATA" > /tmp/input.json
-        ./run-tests.sh 
+        bash ${{ github.action_path }}/run-tests.sh 
